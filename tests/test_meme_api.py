@@ -12,6 +12,10 @@ from data.defolt_payload import invalid_add_mem_payload_with_text_empty
 faker = Faker()
 
 
+@allure.title('User authorization test')
+@allure.story('User authorization')
+@allure.feature('User authorization')
+@pytest.mark.smoke
 def test_user_authorization(authorize_user):
     payload = user_authorization_payload
     authorize_user.authorize_user(payload)
@@ -24,6 +28,10 @@ def test_user_authorization(authorize_user):
     authorize_user.check_status_code_is_200()
 
 
+@allure.title('Check activity token test')
+@allure.story('Activity token')
+@allure.feature('Token')
+@pytest.mark.regression
 def test_check_activity_token(activity_token, auth_token, user_name):
     activity_token.activity_token(auth_token)
     activity_token.check_status_code_is_200()
@@ -33,6 +41,10 @@ def test_check_activity_token(activity_token, auth_token, user_name):
     activity_token.check_text_is_token_not_found()
 
 
+@allure.title('Add meme test')
+@allure.story('Add meme')
+@allure.feature('Meme')
+@pytest.mark.smoke
 def test_add_meme(add_mem, auth_token, delete_meme, user_name):
     payload = defolt_payload
     add_mem.add_mem(auth_token, payload)
@@ -50,6 +62,10 @@ def test_add_meme(add_mem, auth_token, delete_meme, user_name):
     add_mem.check_status_code_is_200()
 
 
+@allure.title('Get meme by id test')
+@allure.story('Get meme by id')
+@allure.feature('Meme')
+@pytest.mark.smoke
 def test_get_mem_by_id(get_mem_by_id, auth_token, meme_id):
     get_mem_by_id.get_mem_by_id(auth_token, meme_id)
     get_mem_by_id.check_status_code_is_200()
@@ -60,7 +76,10 @@ def test_get_mem_by_id(get_mem_by_id, auth_token, meme_id):
     get_mem_by_id.check_status_code_is_404()
 
 
-
+@allure.title('Get all memes test')
+@allure.story('Get all memes')
+@allure.feature('Meme')
+@pytest.mark.smoke
 def test_get_all_memes(get_all_memes, auth_token):
     get_all_memes.get_all_memes(auth_token)
     get_all_memes.check_status_code_is_200()
@@ -69,6 +88,10 @@ def test_get_all_memes(get_all_memes, auth_token):
     get_all_memes.check_keys_in_data()
 
 
+@allure.title('Delete meme test')
+@allure.story('Delete meme')
+@allure.feature('Meme')
+@pytest.mark.smoke
 def test_delete_meme(auth_token, delete_meme, meme_id, get_mem_by_id):
     delete_meme.delete_meme(auth_token, meme_id)
     delete_meme.check_status_code_is_200()
@@ -77,6 +100,10 @@ def test_delete_meme(auth_token, delete_meme, meme_id, get_mem_by_id):
     get_mem_by_id.check_status_code_is_404()
 
 
+@allure.title('Change meme test')
+@allure.story('Change meme')
+@allure.feature('Meme')
+@pytest.mark.retest
 @pytest.mark.parametrize('text, url, info', [
     ('1', '.com', {'rating': random.randint(0, 10), 'type': [5, 'avi'], 'user': faker.name()}),
     ('Name' * 10, "https://google.com'", {'rating': random.randint(-1, 11), 'type': [{}, 'JPEG'], 'user': '*/-_-\\'}),
@@ -97,4 +124,3 @@ def test_change_meme(auth_token, meme_id, change_meme, user_name, text, url, inf
     change_meme.check_mem_info(info)
     change_meme.check_updated_by_user(user_name)
     change_meme.check_mem_id(meme_id)
-

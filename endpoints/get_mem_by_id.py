@@ -7,12 +7,13 @@ from endpoints.base_endpoint import BaseEndpoints
 
 logging.getLogger(__name__)
 
+
 class GetMemeById(BaseEndpoints):
 
     @allure.step('Get meme by id')
     def get_mem_by_id(self, auth_token, mem_id):
         headers = {'Authorization': auth_token}
-        self.response = requests.get(f'http://167.172.172.115:52355/meme/{mem_id}', headers=headers)
+        self.response = requests.get(f'{self.url}meme/{mem_id}', headers=headers)
         logging.info(f'Get meme by id: {mem_id}')
         self.status_code = self.response.status_code
 
@@ -32,10 +33,3 @@ class GetMemeById(BaseEndpoints):
         assert "text" in self.response.json()
         assert "updated_by" in self.response.json()
         assert "url" in self.response.json()
-
-
-
-
-
-
-

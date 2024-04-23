@@ -19,4 +19,3 @@ class SchemaAddMeme(BaseModel):
     tags: list
     info: SchemaInfoMeme
     updated_by: str
-

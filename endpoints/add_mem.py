@@ -26,7 +26,7 @@ class AddMem(BaseEndpoints):
         payload = payload if payload else PAYLOAD
         headers = {'Authorization': auth_token}
         logging.info(f'autorization token: {auth_token}')
-        self.response = requests.post(f'{self.url}/meme', json=payload, headers=headers)
+        self.response = requests.post(f'{self.url}meme', json=payload, headers=headers)
         self.status_code = self.response.status_code
         if self.status_code == 200:
             self.response_json = self.response.json()
@@ -57,7 +57,6 @@ class AddMem(BaseEndpoints):
         assert self.response_schema.updated_by == user
         logging.info(f'mem was added by user: {user}')
 
-
     @allure.step('Check mem text')
     def check_mem_text(self, text):
         assert self.response_schema.text == text
@@ -66,7 +65,3 @@ class AddMem(BaseEndpoints):
     @allure.step('Check message invalid parameters')
     def check_message_invalid_parameters(self):
         assert 'Invalid parameters' in self.response.text
-
-
-
-

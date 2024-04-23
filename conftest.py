@@ -1,5 +1,3 @@
-import requests
-import allure
 import pytest
 import logging
 import os
@@ -11,6 +9,7 @@ from endpoints.get_mem_by_id import GetMemeById
 from endpoints.delete_mem import DeleteMeme
 from endpoints.get_mems import GetAllMemes
 from endpoints.change_mem import ChangeMeme
+
 
 logging.getLogger(__name__)
 

@@ -12,7 +12,7 @@ class ChangeMeme(BaseEndpoints):
     @allure.step('Change meme')
     def change_meme(self, auth_token, meme_id, payload):
         headers = {'Authorization': auth_token}
-        self.response = requests.put(f'http://167.172.172.115:52355/meme/{meme_id}', json=payload, headers=headers)
+        self.response = requests.put(f'{self.url}meme/{meme_id}', json=payload, headers=headers)
         self.status_code = self.response.status_code
         if self.status_code == 200:
             self.response_json = self.response.json()
@@ -41,9 +41,6 @@ class ChangeMeme(BaseEndpoints):
 
     @allure.step('Check mem id')
     def check_mem_id(self, meme_id):
-        assert self.response_json['id'] == meme_id
-
-
-
-
-
+        assert self.response_json['id'] == meme_id, (f'expected is {meme_id}, {type(meme_id)}, '
+                                                     f'actual: {self.response_json["id"]}, '
+                                                     f'{type(self.response_json["id"])}')

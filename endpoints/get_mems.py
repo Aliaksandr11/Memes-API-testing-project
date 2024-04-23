@@ -4,6 +4,7 @@ import logging
 
 from endpoints.base_endpoint import BaseEndpoints
 
+
 logging.getLogger(__name__)
 
 
@@ -12,7 +13,7 @@ class GetAllMemes(BaseEndpoints):
     @allure.step('Get all memes')
     def get_all_memes(self, auth_token):
         headers = {'Authorization': auth_token}
-        self.response = requests.get('http://167.172.172.115:52355/meme', headers=headers)
+        self.response = requests.get(f'{self.url}meme', headers=headers)
         self.status_code = self.response.status_code
         self.response_json = self.response.json()
         self.meme_ids = [mem['id'] for mem in self.response_json['data']]
@@ -22,7 +23,7 @@ class GetAllMemes(BaseEndpoints):
     def check_uniqueness_ids(self):
         assert len(set(self.meme_ids)) == len(self.meme_ids)
 
-    @allure.step('Сhecking the expected and actual number of memes')
+    @allure.step('Checking the expected and actual number of memes')
     def check_memes_count(self):
         assert len(self.response_json['data']) == len(self.meme_ids)
 
@@ -34,20 +35,3 @@ class GetAllMemes(BaseEndpoints):
             assert "tags" in meme
             assert "text" in meme
             assert "updated_by" in meme
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

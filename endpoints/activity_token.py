@@ -10,7 +10,7 @@ class ActivityToken(BaseEndpoints):
 
     @allure.step('Check activity token')
     def activity_token(self, token):
-        self.response = requests.get(f'{self.url}/authorize/{token}')
+        self.response = requests.get(f'{self.url}authorize/{token}')
         logging.info(f'Check activity token: {token}')
         self.status_code = self.response.status_code
 

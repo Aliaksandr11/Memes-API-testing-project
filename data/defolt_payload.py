@@ -30,4 +30,3 @@ invalid_add_mem_payload_with_text_empty = {
                  'mp4'],
         'user': 'chzel979'}
 }
-

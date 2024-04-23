@@ -1,11 +1,8 @@
-import requests
 import allure
-
-name = 'Aleksandr'
 
 
 class BaseEndpoints:
-    url = 'http://167.172.172.115:52355'
+    url = 'http://167.172.172.115:52355/'
     response = None
     status_code = None
     response_json = None

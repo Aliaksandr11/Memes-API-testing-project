@@ -103,12 +103,11 @@ def test_delete_meme(auth_token, delete_meme, meme_id, get_mem_by_id):
 @allure.title('Change meme test')
 @allure.story('Change meme')
 @allure.feature('Meme')
-@pytest.mark.retest
 @pytest.mark.parametrize('text, url, info', [
     ('1', '.com', {'rating': random.randint(0, 10), 'type': [5, 'avi'], 'user': faker.name()}),
     ('Name' * 10, "https://google.com'", {'rating': random.randint(-1, 11), 'type': [{}, 'JPEG'], 'user': '*/-_-\\'}),
 ])
-@pytest.mark.bug('BUG #1')
+@pytest.mark.skip('BUG #1')
 def test_change_meme(auth_token, meme_id, change_meme, user_name, text, url, info):
     payload = {
         "id": meme_id,

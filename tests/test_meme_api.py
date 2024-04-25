@@ -9,6 +9,7 @@ from data.user_authorization_payload import invalid_user_authorization_payload_w
 from data.user_authorization_payload import user_authorization_payload_with_empty
 from data.defolt_payload import invalid_add_mem_payload_with_int_in_text
 from data.defolt_payload import invalid_add_mem_payload_with_text_empty
+from data.defolt_payload import payload_without_key_text
 faker = Faker()
 
 
@@ -58,8 +59,11 @@ def test_add_meme(add_mem, auth_token, delete_meme, user_name):
     add_mem.add_mem(auth_token, invalid_add_mem_payload_with_int_in_text)
     add_mem.check_status_code_is_400()
     add_mem.check_message_invalid_parameters()
+    add_mem.add_mem(auth_token, payload_without_key_text)
+    add_mem.check_status_code_is_400()
     add_mem.add_mem(auth_token, invalid_add_mem_payload_with_text_empty)
     add_mem.check_status_code_is_200()
+
 
 
 @allure.title('Get meme by id test')
@@ -74,6 +78,8 @@ def test_get_mem_by_id(get_mem_by_id, auth_token, meme_id):
     get_mem_by_id.check_keys_in_data()
     get_mem_by_id.get_mem_by_id(auth_token, 0)
     get_mem_by_id.check_status_code_is_404()
+    get_mem_by_id.get_mem_by_id('123', meme_id)
+    get_mem_by_id.check_status_code_is_401()
 
 
 @allure.title('Get all memes test')
@@ -86,6 +92,8 @@ def test_get_all_memes(get_all_memes, auth_token):
     get_all_memes.check_uniqueness_ids()
     get_all_memes.check_memes_count()
     get_all_memes.check_keys_in_data()
+    get_all_memes.get_all_memes('123')
+    get_all_memes.check_status_code_is_401()
 
 
 @allure.title('Delete meme test')
@@ -98,6 +106,10 @@ def test_delete_meme(auth_token, delete_meme, meme_id, get_mem_by_id):
     delete_meme.check_delete_meme(meme_id)
     get_mem_by_id.get_mem_by_id(auth_token, meme_id)
     get_mem_by_id.check_status_code_is_404()
+    delete_meme.delete_meme(auth_token, 0)
+    delete_meme.check_status_code_is_404()
+    delete_meme.delete_meme('123', meme_id)
+    delete_meme.check_status_code_is_401()
 
 
 @allure.title('Change meme test')
@@ -124,3 +136,5 @@ def test_change_meme(auth_token, meme_id, change_meme, user_name, text, url, inf
     change_meme.check_mem_info(info)
     change_meme.check_updated_by_user(user_name)
     change_meme.check_mem_id(meme_id)
+    change_meme.change_meme(auth_token, meme_id, invalid_add_mem_payload_with_int_in_text)
+    change_meme.check_status_code_is_400()

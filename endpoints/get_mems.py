@@ -15,9 +15,10 @@ class GetAllMemes(BaseEndpoints):
         headers = {'Authorization': auth_token}
         self.response = requests.get(f'{self.url}meme', headers=headers)
         self.status_code = self.response.status_code
-        self.response_json = self.response.json()
-        self.meme_ids = [mem['id'] for mem in self.response_json['data']]
-        logging.info(f'Get all memes. Memes count: {self.meme_ids}')
+        if self.status_code == 200:
+            self.response_json = self.response.json()
+            self.meme_ids = [mem['id'] for mem in self.response_json['data']]
+            logging.info(f'Get all memes. Memes count: {self.meme_ids}')
 
     @allure.step('id uniqueness check')
     def check_uniqueness_ids(self):

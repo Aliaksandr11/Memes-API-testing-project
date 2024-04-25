@@ -30,3 +30,13 @@ invalid_add_mem_payload_with_text_empty = {
                  'mp4'],
         'user': 'chzel979'}
 }
+
+
+payload_without_key_text = {
+    "url": "https://9gag.com/gag/a1mvBqR",
+    "tags": ['funny', 'dog'],
+    "info": {
+        'rating': 4,
+        'type': ['gif',
+                 'mp4'],
+    }}

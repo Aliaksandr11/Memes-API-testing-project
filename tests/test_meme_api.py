@@ -5,11 +5,9 @@ from faker import Faker
 
 from data.defolt_payload import defolt_payload
 from data.user_authorization_payload import user_authorization_payload
-from data.user_authorization_payload import invalid_user_authorization_payload_with_int
 from data.user_authorization_payload import user_authorization_payload_with_empty
 from data.defolt_payload import invalid_add_mem_payload_with_int_in_text
 from data.defolt_payload import invalid_add_mem_payload_with_text_empty
-from data.defolt_payload import payload_without_key_text
 faker = Faker()
 
 
@@ -23,8 +21,6 @@ def test_user_authorization(authorize_user):
     authorize_user.check_status_code_is_200()
     authorize_user.check_user_name(payload['name'])
     authorize_user.check_token()
-    authorize_user.authorize_user(invalid_user_authorization_payload_with_int)
-    authorize_user.check_status_code_is_400()
     authorize_user.authorize_user(user_authorization_payload_with_empty)
     authorize_user.check_status_code_is_200()
 
@@ -46,7 +42,7 @@ def test_check_activity_token(activity_token, auth_token, user_name):
 @allure.story('Add meme')
 @allure.feature('Meme')
 @pytest.mark.smoke
-def test_add_meme(add_mem, auth_token, delete_meme, user_name):
+def test_add_meme(add_mem, auth_token, user_name):
     payload = defolt_payload
     add_mem.add_mem(auth_token, payload)
     add_mem.check_status_code_is_200()
@@ -55,12 +51,6 @@ def test_add_meme(add_mem, auth_token, delete_meme, user_name):
     add_mem.check_mem_url(payload['url'])
     add_mem.check_mem_tags(payload['tags'])
     add_mem.check_mem_info(payload['info'])
-    add_mem.add_mem(auth_token, payload)
-    add_mem.add_mem(auth_token, invalid_add_mem_payload_with_int_in_text)
-    add_mem.check_status_code_is_400()
-    add_mem.check_message_invalid_parameters()
-    add_mem.add_mem(auth_token, payload_without_key_text)
-    add_mem.check_status_code_is_400()
     add_mem.add_mem(auth_token, invalid_add_mem_payload_with_text_empty)
     add_mem.check_status_code_is_200()
 
@@ -137,3 +127,34 @@ def test_change_meme(auth_token, meme_id, change_meme, user_name, text, url, inf
     change_meme.check_mem_id(meme_id)
     change_meme.change_meme(auth_token, meme_id, invalid_add_mem_payload_with_int_in_text)
     change_meme.check_status_code_is_400()
+
+
+@allure.title('Add meme with invalid data test')
+@pytest.mark.regresion
+@pytest.mark.parametrize('text, url, tags, info', [(
+        1, ' ', ['funny', 'dog'], {'rating': 4, 'type': ['gif', 'mp4'], 'user': 'chzel)'}),
+    (' ', 'https://9gag.com/gag/a1mvBqR', 'funny', {'rating': 4, 'type': ['gif', 'mp4'], 'user': 'chzel979'}),
+    ('Me trying to reach my goals', 1, ['funny', 'dog'], {'rating': 4, 'type': ['gif', 'mp4'], 'user': 'chzel979'}),
+    ('Me trying to reach my goals', 'https://9gag.com/gag/a1mvBqR', ['funny', 'dog'], ['rating', 'type', 'user'])])
+def test_add_meme_with_invalid_data(add_mem, auth_token, text, url, tags, info):
+    payload = {
+        "text": text,
+        "url": url,
+        "tags": tags,
+        "info": info
+    }
+    add_mem.add_mem(auth_token, payload)
+    add_mem.check_status_code_is_400()
+    add_mem.check_message_invalid_parameters()
+
+
+@allure.title('User authorization with invalid data test')
+@pytest.mark.regresion
+@pytest.mark.parametrize('name', [
+    1, ['User'], {'name': 'User'}])
+def test_authorization_with_invalid_user_name(authorize_user, name):
+    payload = {
+        'name': name,
+    }
+    authorize_user.authorize_user(payload)
+    authorize_user.check_status_code_is_400()

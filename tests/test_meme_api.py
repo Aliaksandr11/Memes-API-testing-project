@@ -84,6 +84,12 @@ def test_get_all_memes(get_all_memes, auth_token):
     get_all_memes.check_uniqueness_ids()
     get_all_memes.check_memes_count()
     get_all_memes.check_keys_in_data()
+    get_all_memes.check_mem_text_is_str()
+    get_all_memes.check_mem_url_is_str()
+    get_all_memes.check_mem_tags_is_list()
+    get_all_memes.check_mem_info_is_dict()
+    get_all_memes.check_mem_updated_by_is_str()
+    get_all_memes.check_mem_id_is_int()  # BUG #2
     get_all_memes.get_all_memes('123')
     get_all_memes.check_status_code_is_401()
 
@@ -111,7 +117,7 @@ def test_delete_meme(auth_token, delete_meme, meme_id, get_mem_by_id):
     ('1', '.com', {'rating': random.randint(0, 10), 'type': [5, 'avi'], 'user': faker.name()}),
     ('Name' * 10, "https://google.com'", {'rating': random.randint(-1, 11), 'type': [{}, 'JPEG'], 'user': '*/-_-\\'}),
 ])
-@pytest.mark.skip('BUG #1')
+# @pytest.mark.skip('BUG #1')
 def test_change_meme(auth_token, meme_id, change_meme, user_name, text, url, info):
     payload = {
         "id": meme_id,
@@ -127,9 +133,9 @@ def test_change_meme(auth_token, meme_id, change_meme, user_name, text, url, inf
     change_meme.check_mem_tags(payload['tags'])
     change_meme.check_mem_info(info)
     change_meme.check_updated_by_user(user_name)
-    change_meme.check_mem_id(meme_id)
     change_meme.change_meme(auth_token, meme_id, invalid_add_mem_payload_with_int_in_text)
     change_meme.check_status_code_is_400()
+    change_meme.check_mem_id(meme_id)  # BUG #1
 
 
 @allure.title('Add meme with invalid data test')

@@ -18,7 +18,6 @@ class GetAllMemes(BaseEndpoints):
         if self.status_code == 200:
             self.response_json = self.response.json()
             self.meme_ids = [mem['id'] for mem in self.response_json['data']]
-            logging.info(f'Get all memes. Memes count: {self.meme_ids}')
 
     @allure.step('id uniqueness check')
     def check_uniqueness_ids(self):
@@ -36,3 +35,34 @@ class GetAllMemes(BaseEndpoints):
             assert "tags" in meme
             assert "text" in meme
             assert "updated_by" in meme
+            assert "url" in meme
+
+    @allure.step('Check that mem text is str')
+    def check_mem_text_is_str(self):
+        for meme in self.response_json['data']:
+            assert isinstance(meme['text'], str)
+
+    @allure.step('Check that mem url is str')
+    def check_mem_url_is_str(self):
+        for meme in self.response_json['data']:
+            assert isinstance(meme['url'], str)
+
+    @allure.step('Check that mem tags is list')
+    def check_mem_tags_is_list(self):
+        for meme in self.response_json['data']:
+            assert isinstance(meme['tags'], list)
+
+    @allure.step('Check that mem info is dict')
+    def check_mem_info_is_dict(self):
+        for meme in self.response_json['data']:
+            assert isinstance(meme['info'], dict)
+
+    @allure.step('Check that mem updated_by is str')
+    def check_mem_updated_by_is_str(self):
+        for meme in self.response_json['data']:
+            assert isinstance(meme['updated_by'], str)
+
+    @allure.step('Check that mem id is int')
+    def check_mem_id_is_int(self):
+        for meme in self.response_json['data']:
+            assert isinstance(meme['id'], int), f'{meme["id"]} is not int'

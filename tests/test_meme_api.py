@@ -65,7 +65,6 @@ def test_add_meme(add_mem, auth_token, delete_meme, user_name):
     add_mem.check_status_code_is_200()
 
 
-
 @allure.title('Get meme by id test')
 @allure.story('Get meme by id')
 @allure.feature('Meme')

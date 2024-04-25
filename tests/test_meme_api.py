@@ -6,6 +6,7 @@ from faker import Faker
 from data.defolt_payload import defolt_payload
 from data.user_authorization_payload import user_authorization_payload
 from data.user_authorization_payload import user_authorization_payload_with_empty
+from data.user_authorization_payload import user_authorization_payload_without_name
 from data.defolt_payload import invalid_add_mem_payload_with_int_in_text
 from data.defolt_payload import invalid_add_mem_payload_with_text_empty
 faker = Faker()
@@ -23,6 +24,8 @@ def test_user_authorization(authorize_user):
     authorize_user.check_token()
     authorize_user.authorize_user(user_authorization_payload_with_empty)
     authorize_user.check_status_code_is_200()
+    authorize_user.authorize_user(user_authorization_payload_without_name)
+    authorize_user.check_status_code_is_400()
 
 
 @allure.title('Check activity token test')
@@ -132,9 +135,9 @@ def test_change_meme(auth_token, meme_id, change_meme, user_name, text, url, inf
 @allure.title('Add meme with invalid data test')
 @pytest.mark.regresion
 @pytest.mark.parametrize('text, url, tags, info', [(
-        1, ' ', ['funny', 'dog'], {'rating': 4, 'type': ['gif', 'mp4'], 'user': 'chzel)'}),
-    (' ', 'https://9gag.com/gag/a1mvBqR', 'funny', {'rating': 4, 'type': ['gif', 'mp4'], 'user': 'chzel979'}),
-    ('Me trying to reach my goals', 1, ['funny', 'dog'], {'rating': 4, 'type': ['gif', 'mp4'], 'user': 'chzel979'}),
+        1, 'https://9gag.com/gag/a1mvBqR', ['funny', 'dog'], {'rating': 4, 'type': ['gif', 'mp4'], 'user': 'chzel)'}),
+    ('Me trying', 'https://9gag.com/gag/a1mvBqR', 'funny', {'rating': 4, 'type': ['gif', 'mp4'], 'user': 'chzel979'}),
+    ('Me trying', 1, ['funny', 'dog'], {'rating': 4, 'type': ['gif', 'mp4'], 'user': 'chzel979'}),
     ('Me trying to reach my goals', 'https://9gag.com/gag/a1mvBqR', ['funny', 'dog'], ['rating', 'type', 'user'])])
 def test_add_meme_with_invalid_data(add_mem, auth_token, text, url, tags, info):
     payload = {
@@ -151,7 +154,7 @@ def test_add_meme_with_invalid_data(add_mem, auth_token, text, url, tags, info):
 @allure.title('User authorization with invalid data test')
 @pytest.mark.regresion
 @pytest.mark.parametrize('name', [
-    1, ['User'], {'name': 'User'}])
+    1, ['User'], {'name': 'User'}, {}, [], dict()])
 def test_authorization_with_invalid_user_name(authorize_user, name):
     payload = {
         'name': name,

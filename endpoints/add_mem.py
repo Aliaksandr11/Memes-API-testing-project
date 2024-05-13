@@ -53,7 +53,7 @@ class AddMem(BaseEndpoints):
         assert self.response_schema.info.user == info['user']
 
     @allure.step('Check that mem was added by user')
-    def check_updated_by_user(self, user):
+    def check_mem_added_by_user(self, user):
         assert self.response_schema.updated_by == user
         logging.info(f'mem was added by user: {user}')
 

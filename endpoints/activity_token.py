@@ -21,3 +21,8 @@ class ActivityToken(BaseEndpoints):
     @allure.step('Check text is "Token not found"')
     def check_text_is_token_not_found(self):
         assert 'Token not found' in self.response.text
+
+    @allure.step('Check text is "URL not found"')
+    def check_text_is_url_not_found(self):
+        assert ('The requested URL was not found on the server. '
+                'If you entered the URL manually please check your spelling and try again') in self.response.text

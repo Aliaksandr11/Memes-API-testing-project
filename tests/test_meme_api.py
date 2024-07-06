@@ -36,7 +36,7 @@ def test_user_authorize_with_empty_name(authorize_user):
 
 
 @allure.title('User authorization with invalid user name')
-@pytest.mark.regresion
+@pytest.mark.regression
 @pytest.mark.parametrize('name', [
     1, ['User'], {'name': 'User'}, {}, [], dict()])
 def test_authorization_with_invalid_user_name(authorize_user, name):
@@ -132,7 +132,7 @@ def test_add_meme_with_empty_text(add_mem, auth_token, delete_meme):
 @allure.title('Test: Add meme with invalid data')
 @allure.story('Add meme')
 @allure.feature('Meme')
-@pytest.mark.regresion
+@pytest.mark.regression
 @pytest.mark.parametrize('text, url, tags, info', [
     (1, 'https://9gag.com/gag/a1mvBqR', ['funny', 'dog'], {'rating': 4, 'type': ['gif', 'mp4'], 'user': 'chzel)'}),
     ('Me trying', 'https://9gag.com/gag/a1mvBqR', 'funny', {'rating': 4, 'type': ['gif', 'mp4'], 'user': 'chzel979'}),

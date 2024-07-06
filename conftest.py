@@ -38,19 +38,18 @@ def is_token_valid(token):
 def auth_token():
     token = load_token()
     if token and is_token_valid(token):
-        yield token
+        return token
     else:
         authorize_user = AuthorizeUser()
         authorize_user.authorize_user()
         assert authorize_user.response.status_code == 200
         token = authorize_user.token
         save_token(token)
-        yield token
+        return token
 
 
 @pytest.fixture()
-def meme_id(auth_token, delete_meme):
-    add_mem = AddMem()
+def meme_id(auth_token, add_mem, delete_meme):
     add_mem.add_mem(auth_token)
     meme_id = add_mem.mem_id
     yield meme_id
@@ -59,11 +58,10 @@ def meme_id(auth_token, delete_meme):
 
 
 @pytest.fixture()
-def user_name():
-    authorize_user = AuthorizeUser()
+def user_name(authorize_user):
     authorize_user.authorize_user()
     user_name = authorize_user.user_name
-    yield user_name
+    return user_name
 
 
 @pytest.fixture()

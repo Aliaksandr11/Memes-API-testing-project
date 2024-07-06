@@ -10,3 +10,4 @@ secrets.py
 allure-results
 allure-report
 *.log
+*.txt

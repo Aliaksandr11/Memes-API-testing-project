@@ -25,7 +25,7 @@ class AddMem(BaseEndpoints):
     def add_mem(self, auth_token, payload=None):
         payload = payload if payload else PAYLOAD
         headers = {'Authorization': auth_token}
-        logging.info(f'autorization token: {auth_token}')
+        logging.info(f'Authorization token: {auth_token}')
         self.response = requests.post(f'{self.url}meme', json=payload, headers=headers)
         self.status_code = self.response.status_code
         if self.status_code == 200:
@@ -65,3 +65,5 @@ class AddMem(BaseEndpoints):
     @allure.step('Check message invalid parameters')
     def check_message_invalid_parameters(self):
         assert 'Invalid parameters' in self.response.text
+
+

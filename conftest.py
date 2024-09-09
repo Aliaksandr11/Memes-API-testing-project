@@ -35,12 +35,11 @@ def is_token_valid(token):
 
 
 @pytest.fixture(scope='session', autouse=True)
-def auth_token():
+def auth_token(authorize_user):
     token = load_token()
     if token and is_token_valid(token):
         return token
     else:
-        authorize_user = AuthorizeUser()
         authorize_user.authorize_user()
         assert authorize_user.response.status_code == 200
         token = authorize_user.token
@@ -66,41 +65,34 @@ def user_name(authorize_user):
 
 @pytest.fixture()
 def activity_token():
-    activity_token = ActivityToken()
-    return activity_token
+    return ActivityToken()
 
 
 @pytest.fixture()
 def authorize_user():
-    authorize_user = AuthorizeUser()
-    return authorize_user
+    return AuthorizeUser()
 
 
 @pytest.fixture()
 def add_mem():
-    add_mem = AddMem()
-    return add_mem
+    return AddMem()
 
 
 @pytest.fixture()
 def get_mem_by_id():
-    get_mem_by_id = GetMemeById()
-    return get_mem_by_id
+    return GetMemeById()
 
 
 @pytest.fixture()
 def delete_meme():
-    delete_meme = DeleteMeme()
-    return delete_meme
+    return DeleteMeme()
 
 
 @pytest.fixture()
 def get_all_memes():
-    get_all_memes = GetAllMemes()
-    return get_all_memes
+    return GetAllMemes()
 
 
 @pytest.fixture()
 def change_meme():
-    change_meme = ChangeMeme()
-    return change_meme
+    return ChangeMeme()
